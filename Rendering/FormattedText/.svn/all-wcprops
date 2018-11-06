@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/WDLib/!svn/ver/2/trunk/Rendering/FormattedText
+END
+TextFormat.cs
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/WDLib/!svn/ver/2/trunk/Rendering/FormattedText/TextFormat.cs
+END
+RTFString.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/WDLib/!svn/ver/2/trunk/Rendering/FormattedText/RTFString.cs
+END
+MiscFontUtils.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/WDLib/!svn/ver/2/trunk/Rendering/FormattedText/MiscFontUtils.cs
+END
+RTFLine.cs
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/WDLib/!svn/ver/2/trunk/Rendering/FormattedText/RTFLine.cs
+END
+RTFParser.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/WDLib/!svn/ver/2/trunk/Rendering/FormattedText/RTFParser.cs
+END
+RTFChar.cs
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/WDLib/!svn/ver/2/trunk/Rendering/FormattedText/RTFChar.cs
+END

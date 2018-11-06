@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/WDLib/!svn/ver/2/trunk/Data/DataStructures
+END
+IQuack.cs
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/WDLib/!svn/ver/2/trunk/Data/DataStructures/IQuack.cs
+END
+DSTNode.cs
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/WDLib/!svn/ver/2/trunk/Data/DataStructures/DSTNode.cs
+END
+Quack.cs
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/WDLib/!svn/ver/2/trunk/Data/DataStructures/Quack.cs
+END
+ManagedCollection.cs
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/WDLib/!svn/ver/2/trunk/Data/DataStructures/ManagedCollection.cs
+END
+PagingCache.cs
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/WDLib/!svn/ver/2/trunk/Data/DataStructures/PagingCache.cs
+END
+DST.cs
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/WDLib/!svn/ver/2/trunk/Data/DataStructures/DST.cs
+END
+SortableArray.cs
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/WDLib/!svn/ver/2/trunk/Data/DataStructures/SortableArray.cs
+END

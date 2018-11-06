@@ -1,0 +1,20 @@
+﻿using System;
+namespace WD_toolbox.Data.DataStructures
+{
+	interface IQuack<datumType>
+	{
+		void Clear();
+		bool Contains(datumType value);
+		object Dequeue();
+		void Enqueue(datumType item);
+		bool IsEmpty();
+		datumType PeekBottom();
+		datumType PeekTop();
+		datumType Pop();
+		void Push(datumType item);
+	}
+	
+	interface IQuack : IQuack<object>
+	{
+	};
+}

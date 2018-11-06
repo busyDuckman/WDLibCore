@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/WDLib/!svn/ver/2/trunk/Rendering/Colour
+END
+hColour.cs
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/WDLib/!svn/ver/2/trunk/Rendering/Colour/hColour.cs
+END
+IColour.cs
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/WDLib/!svn/ver/2/trunk/Rendering/Colour/IColour.cs
+END
+qColour.cs
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/WDLib/!svn/ver/2/trunk/Rendering/Colour/qColour.cs
+END

@@ -1,0 +1,66 @@
+using System;
+
+namespace WD_toolbox.Math.Complex
+{
+/// <summary>
+/// Handles Complex numbers
+/// </summary>
+public struct complex
+	{
+	/// <summary>
+	/// euler position of the complex number.
+	/// </summary>
+	public double x, y;
+	
+	/// <summary>
+	/// Creates a new complex number.
+	/// </summary>
+	/// <param name="a">x euler position of the complex number</param>
+	/// <param name="b">y euler position of the complex number</param>
+	public complex(double a, double b)
+		{
+		x = a;
+		y = b;
+		}
+	
+	/// <summary>
+	/// Multiplies two complex numbers
+	/// </summary>
+	/// <param name="a">a complex number.</param>
+	/// <param name="b">a complex number.</param>
+	/// <returns>a*b</returns>
+	public static complex operator *(complex a, complex b)
+		{
+		return new complex(a.x*b.x - a.y*b.y, a.x*b.y + b.x*a.y);
+		}
+	
+	/// <summary>
+	/// Adds two complex numbers
+	/// </summary>
+	/// <param name="a">a complex number.</param>
+	/// <param name="b">a complex number.</param>
+	/// <returns>a+b</returns>	
+	public static complex operator +(complex a, complex b)
+		{
+		return new complex(a.x+b.x, a.y+b.y);
+		}
+	
+	/// <summary>
+	/// sqr operation for complex numbers
+	/// </summary>
+	/// <returns>A new complex number.</returns>
+	public complex getSqr()
+		{
+		return new complex((x*x) - (y*y), x*y*2);
+		}
+	
+	/// <summary>
+	/// SqrMag operation for complex numbers
+	/// </summary>
+	/// <returns>A scalar value.</returns>
+	public double getSqrMag()
+		{
+		return ((x*x)+(y*y));
+		}
+	}
+}

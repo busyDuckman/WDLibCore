@@ -1,0 +1,871 @@
+using System;
+using System.Runtime.InteropServices;
+
+namespace WD_toolbox.Rendering.Colour
+{
+/// <summary>
+/// A class for fast access to colours stored in the win32 (BGRA) format
+/// </summary>
+[StructLayout(LayoutKind.Sequential, Pack = 8)]
+[Serializable]
+public struct qColor : IFormattable, IColour<qColor>
+	{
+	#region data elements
+	/// <summary>
+	/// Represents the blue component
+	/// </summary>
+	public byte b;
+	
+	/// <summary>
+	/// Represents the green component
+	/// </summary>
+	public byte g;
+	/// <summary>
+	/// Represents the red component
+	/// </summary>
+	public byte r;
+	
+	/// <summary>
+	/// Represents the alpha component (0=transparent, 255=solid)
+	/// </summary>
+	public byte a;
+	#endregion
+	
+	#region named colours
+	#region tables
+	#region color names table	
+	static private string[] colorNames = new string[128] {"alice blue",
+															"antique white",
+															"aqua marine",
+															"azure",
+															"beige",
+															"bisque",
+															"black",
+															"blanched almond",
+															"blue",
+															"blue violet",
+															"blue violet",
+															"brown",
+															"burly wood",
+															"cadet blue",
+															"chartreuse",
+															"chocolate",
+															"coral",
+															"cornflower blue",
+															"corn silk",
+															"cyan",
+															"dark blue",
+															"dark cyan",
+															"dark golden rod",
+															"dark gray",
+															"dark green",
+															"dark khaki",
+															"dark magenta",
+															"dark olive green",
+															"dark orange",
+															"dark orchid",
+															"dark red",
+															"dark salmon",
+															"dark sea green",
+															"dark slate blue",
+															"dark slate gray",
+															"dark turquoise",
+															"dark violet",
+															"deep pink",
+															"deep sky blue",
+															"dim gray",
+															"dodger blue",
+															"fire brick",
+															"floral white",
+															"forest green",
+															"gainsboro",
+															"ghost white",
+															"gold",
+															"golden rod",
+															"green",
+															"green yellow",
+															"gray",
+															"honeydew",
+															"hotpink",
+															"indianred",
+															"ivory",
+															"khaki",
+															"lavender",
+															"lavender blush",
+															"lawn green",
+															"lemon chiffon",
+															"light blue",
+															"light coral",
+															"light cyan",
+															"light goldenrod",
+															"light golden rod yellow",
+															"light gray",
+															"light green",
+															"light pink",
+															"light salmon",
+															"light sea green",
+															"light sky blue",
+															"light slate blue",
+															"light slate gray",
+															"light steel blue",
+															"light yellow",
+															"limeg reen",
+															"linen",
+															"magenta",
+															"maroon",
+															"midnight blue",
+															"mint cream",
+															"misty rose",
+															"moccasin",
+															"navajo white",
+															"navy",
+															"navy blue",
+															"old lace",
+															"olive drab",
+															"orange",
+															"orange red",
+															"orchid",
+															"pale golden rod",
+															"pale green",
+															"pale turquoise",
+															"pale violet red",
+															"papayawhip",
+															"peach puff",
+															"peru",
+															"pink",
+															"plum",
+															"powder blue",
+															"purple",
+															"red",
+															"rosy brown",
+															"royal blue",
+															"saddle brown",
+															"salmon",
+															"sandy brown",
+															"sea green",
+															"sea shell",
+															"sienna",
+															"sky blue",
+															"slate blue",
+															"slate gray",
+															"snow",
+															"spring green",
+															"steel blue",
+															"tan",
+															"thistle",
+															"tomato",
+															"turquoise",
+															"violet",
+															"violetred",
+															"wheat",
+															"white",
+															"white smoke",
+															"yellow",
+															"yellow green"};
+		#endregion
+	#region color values table
+	static private byte[] colorValues = new byte[128*3] {240,248,255,
+														250,235,215,
+														127,255,212,
+														240,255,255,
+														245,245,220,
+														255,228,196,
+														0,0,0,
+														255,235,205,
+														0,0,255,
+														138,43,226,
+														138,43,226,
+														165,42,42,
+														222,184,135,
+														95,158,160,
+														127,255,0,
+														210,105,30,
+														255,127,80,
+														100,149,237,
+														255,248,220,
+														0,255,255,
+														0,0,139,
+														0,139,139,
+														184,134,11,
+														169,169,169,
+														0,100,0,
+														189,183,107,
+														139,0,139,
+														85,107,47,
+														255,140,0,
+														153,50,204,
+														139,0,0,
+														233,150,122,
+														143,188,143,
+														72,61,139,
+														47,79,79,
+														0,206,209,
+														148,0,211,
+														255,20,147,
+														0,191,255,
+														105,105,105,
+														30,144,255,
+														178,34,34,
+														255,250,240,
+														34,139,34,
+														220,220,220,
+														248,248,255,
+														255,215,0,
+														218,165,32,
+														0,255,0,
+														173,255,47,
+														127,127,127,
+														240,255,240,
+														255,105,180,
+														205,92,92,
+														255,255,240,
+														240,230,140,
+														230,230,250,
+														255,240,245,
+														124,252,0,
+														255,250,205,
+														173,216,230,
+														240,128,128,
+														224,255,255,
+														238,221,130,
+														250,250,210,
+														211,211,211,
+														144,238,144,
+														255,182,193,
+														255,160,122,
+														32,178,170,
+														135,206,250,
+														132,112,255,
+														119,136,153,
+														176,196,222,
+														255,255,224,
+														50,205,50,
+														250,240,230,
+														255,0,255,
+														176,48,96,
+														25,25,112,
+														245,255,250,
+														255,228,225,
+														255,228,181,
+														255,222,173,
+														0,0,128,
+														0,0,128,
+														253,245,230,
+														107,142,35,
+														255,165,0,
+														255,69,0,
+														218,112,214,
+														238,232,170,
+														152,251,152,
+														175,238,238,
+														219,112,147,
+														255,239,213,
+														255,218,185,
+														205,133,63,
+														255,192,203,
+														221,160,221,
+														176,224,230,
+														160,32,240,
+														255,0,0,
+														188,143,143,
+														65,105,225,
+														139,69,19,
+														250,128,114,
+														244,164,96,
+														46,139,87,
+														255,245,238,
+														160,82,45,
+														135,206,235,
+														106,90,205,
+														112,128,144,
+														255,250,250,
+														0,255,127,
+														70,130,180,
+														210,180,140,
+														216,191,216,
+														255,99,71,
+														64,224,208,
+														238,130,238,
+														208,32,144,
+														245,222,179,
+														255,255,255,
+														245,245,245,
+														255,255,0,
+														154,205,50};
+	#endregion
+	struct preDefinedColours
+		{
+		public static qColor aliceBlue = qColor.fromRGB(qColor.colorValues[0*3], qColor.colorValues[0*3+1], qColor.colorValues[0*3+2]);
+		public static qColor antiqueWhite = qColor.fromRGB(qColor.colorValues[1*3], qColor.colorValues[1*3+1], qColor.colorValues[1*3+2]);
+		public static qColor aquaMarine = qColor.fromRGB(qColor.colorValues[2*3], qColor.colorValues[2*3+1], qColor.colorValues[2*3+2]);
+		public static qColor azure = qColor.fromRGB(qColor.colorValues[3*3], qColor.colorValues[3*3+1], qColor.colorValues[3*3+2]);
+		public static qColor beige = qColor.fromRGB(qColor.colorValues[4*3], qColor.colorValues[4*3+1], qColor.colorValues[4*3+2]);
+		public static qColor bisque = qColor.fromRGB(qColor.colorValues[5*3], qColor.colorValues[5*3+1], qColor.colorValues[5*3+2]);
+		public static qColor black = qColor.fromRGB(qColor.colorValues[6*3], qColor.colorValues[6*3+1], qColor.colorValues[6*3+2]);
+		public static qColor blanchedAlmond = qColor.fromRGB(qColor.colorValues[7*3], qColor.colorValues[7*3+1], qColor.colorValues[7*3+2]);
+		public static qColor blue = qColor.fromRGB(qColor.colorValues[8*3], qColor.colorValues[8*3+1], qColor.colorValues[8*3+2]);
+		public static qColor blueViolet = qColor.fromRGB(qColor.colorValues[9*3], qColor.colorValues[9*3+1], qColor.colorValues[9*3+2]);
+		//public static qColor blueViolet = qColor.fromRGB(qColor.colorValues[10*3], qColor.colorValues[10*3+1], qColor.colorValues[10*3+2]);
+		public static qColor brown = qColor.fromRGB(qColor.colorValues[11*3], qColor.colorValues[11*3+1], qColor.colorValues[11*3+2]);
+		public static qColor burlyWood = qColor.fromRGB(qColor.colorValues[12*3], qColor.colorValues[12*3+1], qColor.colorValues[12*3+2]);
+		public static qColor cadetBlue = qColor.fromRGB(qColor.colorValues[13*3], qColor.colorValues[13*3+1], qColor.colorValues[13*3+2]);
+		public static qColor chartreuse = qColor.fromRGB(qColor.colorValues[14*3], qColor.colorValues[14*3+1], qColor.colorValues[14*3+2]);
+		public static qColor chocolate = qColor.fromRGB(qColor.colorValues[15*3], qColor.colorValues[15*3+1], qColor.colorValues[15*3+2]);
+		public static qColor coral = qColor.fromRGB(qColor.colorValues[16*3], qColor.colorValues[16*3+1], qColor.colorValues[16*3+2]);
+		public static qColor cornflowerBlue = qColor.fromRGB(qColor.colorValues[17*3], qColor.colorValues[17*3+1], qColor.colorValues[17*3+2]);
+		public static qColor cornSilk = qColor.fromRGB(qColor.colorValues[18*3], qColor.colorValues[18*3+1], qColor.colorValues[18*3+2]);
+		public static qColor cyan = qColor.fromRGB(qColor.colorValues[19*3], qColor.colorValues[19*3+1], qColor.colorValues[19*3+2]);
+		public static qColor darkBlue = qColor.fromRGB(qColor.colorValues[20*3], qColor.colorValues[20*3+1], qColor.colorValues[20*3+2]);
+		public static qColor darkCyan = qColor.fromRGB(qColor.colorValues[21*3], qColor.colorValues[21*3+1], qColor.colorValues[21*3+2]);
+		public static qColor darkGoldenRod = qColor.fromRGB(qColor.colorValues[22*3], qColor.colorValues[22*3+1], qColor.colorValues[22*3+2]);
+		public static qColor darkGray = qColor.fromRGB(qColor.colorValues[23*3], qColor.colorValues[23*3+1], qColor.colorValues[23*3+2]);
+		public static qColor darkGreen = qColor.fromRGB(qColor.colorValues[24*3], qColor.colorValues[24*3+1], qColor.colorValues[24*3+2]);
+		public static qColor darkKhaki = qColor.fromRGB(qColor.colorValues[25*3], qColor.colorValues[25*3+1], qColor.colorValues[25*3+2]);
+		public static qColor darkMagenta = qColor.fromRGB(qColor.colorValues[26*3], qColor.colorValues[26*3+1], qColor.colorValues[26*3+2]);
+		public static qColor darkOliveGreen = qColor.fromRGB(qColor.colorValues[27*3], qColor.colorValues[27*3+1], qColor.colorValues[27*3+2]);
+		public static qColor darkOrange = qColor.fromRGB(qColor.colorValues[28*3], qColor.colorValues[28*3+1], qColor.colorValues[28*3+2]);
+		public static qColor darkOrchid = qColor.fromRGB(qColor.colorValues[29*3], qColor.colorValues[29*3+1], qColor.colorValues[29*3+2]);
+		public static qColor darkRed = qColor.fromRGB(qColor.colorValues[30*3], qColor.colorValues[30*3+1], qColor.colorValues[30*3+2]);
+		public static qColor darkSalmon = qColor.fromRGB(qColor.colorValues[31*3], qColor.colorValues[31*3+1], qColor.colorValues[31*3+2]);
+		public static qColor darkSeaGreen = qColor.fromRGB(qColor.colorValues[32*3], qColor.colorValues[32*3+1], qColor.colorValues[32*3+2]);
+		public static qColor darkSlateBlue = qColor.fromRGB(qColor.colorValues[33*3], qColor.colorValues[33*3+1], qColor.colorValues[33*3+2]);
+		public static qColor darkSlateGray = qColor.fromRGB(qColor.colorValues[34*3], qColor.colorValues[34*3+1], qColor.colorValues[34*3+2]);
+		public static qColor darkTurquoise = qColor.fromRGB(qColor.colorValues[35*3], qColor.colorValues[35*3+1], qColor.colorValues[35*3+2]);
+		public static qColor darkViolet = qColor.fromRGB(qColor.colorValues[36*3], qColor.colorValues[36*3+1], qColor.colorValues[36*3+2]);
+		public static qColor deepPink = qColor.fromRGB(qColor.colorValues[37*3], qColor.colorValues[37*3+1], qColor.colorValues[37*3+2]);
+		public static qColor deepSkyBlue = qColor.fromRGB(qColor.colorValues[38*3], qColor.colorValues[38*3+1], qColor.colorValues[38*3+2]);
+		public static qColor dimGray = qColor.fromRGB(qColor.colorValues[39*3], qColor.colorValues[39*3+1], qColor.colorValues[39*3+2]);
+		public static qColor dodgerBlue = qColor.fromRGB(qColor.colorValues[40*3], qColor.colorValues[40*3+1], qColor.colorValues[40*3+2]);
+		public static qColor fireBrick = qColor.fromRGB(qColor.colorValues[41*3], qColor.colorValues[41*3+1], qColor.colorValues[41*3+2]);
+		public static qColor floralWhite = qColor.fromRGB(qColor.colorValues[42*3], qColor.colorValues[42*3+1], qColor.colorValues[42*3+2]);
+		public static qColor forestGreen = qColor.fromRGB(qColor.colorValues[43*3], qColor.colorValues[43*3+1], qColor.colorValues[43*3+2]);
+		public static qColor gainsboro = qColor.fromRGB(qColor.colorValues[44*3], qColor.colorValues[44*3+1], qColor.colorValues[44*3+2]);
+		public static qColor ghostWhite = qColor.fromRGB(qColor.colorValues[45*3], qColor.colorValues[45*3+1], qColor.colorValues[45*3+2]);
+		public static qColor gold = qColor.fromRGB(qColor.colorValues[46*3], qColor.colorValues[46*3+1], qColor.colorValues[46*3+2]);
+		public static qColor goldenRod = qColor.fromRGB(qColor.colorValues[47*3], qColor.colorValues[47*3+1], qColor.colorValues[47*3+2]);
+		public static qColor green = qColor.fromRGB(qColor.colorValues[48*3], qColor.colorValues[48*3+1], qColor.colorValues[48*3+2]);
+		public static qColor greenYellow = qColor.fromRGB(qColor.colorValues[49*3], qColor.colorValues[49*3+1], qColor.colorValues[49*3+2]);
+		public static qColor gray = qColor.fromRGB(qColor.colorValues[50*3], qColor.colorValues[50*3+1], qColor.colorValues[50*3+2]);
+		public static qColor honeydew = qColor.fromRGB(qColor.colorValues[51*3], qColor.colorValues[51*3+1], qColor.colorValues[51*3+2]);
+		public static qColor hotpink = qColor.fromRGB(qColor.colorValues[52*3], qColor.colorValues[52*3+1], qColor.colorValues[52*3+2]);
+		public static qColor indianred = qColor.fromRGB(qColor.colorValues[53*3], qColor.colorValues[53*3+1], qColor.colorValues[53*3+2]);
+		public static qColor ivory = qColor.fromRGB(qColor.colorValues[54*3], qColor.colorValues[54*3+1], qColor.colorValues[54*3+2]);
+		public static qColor khaki = qColor.fromRGB(qColor.colorValues[55*3], qColor.colorValues[55*3+1], qColor.colorValues[55*3+2]);
+		public static qColor lavender = qColor.fromRGB(qColor.colorValues[56*3], qColor.colorValues[56*3+1], qColor.colorValues[56*3+2]);
+		public static qColor lavenderBlush = qColor.fromRGB(qColor.colorValues[57*3], qColor.colorValues[57*3+1], qColor.colorValues[57*3+2]);
+		public static qColor lawnGreen = qColor.fromRGB(qColor.colorValues[58*3], qColor.colorValues[58*3+1], qColor.colorValues[58*3+2]);
+		public static qColor lemonChiffon = qColor.fromRGB(qColor.colorValues[59*3], qColor.colorValues[59*3+1], qColor.colorValues[59*3+2]);
+		public static qColor lightBlue = qColor.fromRGB(qColor.colorValues[60*3], qColor.colorValues[60*3+1], qColor.colorValues[60*3+2]);
+		public static qColor lightCoral = qColor.fromRGB(qColor.colorValues[61*3], qColor.colorValues[61*3+1], qColor.colorValues[61*3+2]);
+		public static qColor lightCyan = qColor.fromRGB(qColor.colorValues[62*3], qColor.colorValues[62*3+1], qColor.colorValues[62*3+2]);
+		public static qColor lightGoldenrod = qColor.fromRGB(qColor.colorValues[63*3], qColor.colorValues[63*3+1], qColor.colorValues[63*3+2]);
+		public static qColor lightGoldenRodYellow = qColor.fromRGB(qColor.colorValues[64*3], qColor.colorValues[64*3+1], qColor.colorValues[64*3+2]);
+		public static qColor lightGray = qColor.fromRGB(qColor.colorValues[65*3], qColor.colorValues[65*3+1], qColor.colorValues[65*3+2]);
+		public static qColor lightGreen = qColor.fromRGB(qColor.colorValues[66*3], qColor.colorValues[66*3+1], qColor.colorValues[66*3+2]);
+		public static qColor lightPink = qColor.fromRGB(qColor.colorValues[67*3], qColor.colorValues[67*3+1], qColor.colorValues[67*3+2]);
+		public static qColor lightSalmon = qColor.fromRGB(qColor.colorValues[68*3], qColor.colorValues[68*3+1], qColor.colorValues[68*3+2]);
+		public static qColor lightSeaGreen = qColor.fromRGB(qColor.colorValues[69*3], qColor.colorValues[69*3+1], qColor.colorValues[69*3+2]);
+		public static qColor lightSkyBlue = qColor.fromRGB(qColor.colorValues[70*3], qColor.colorValues[70*3+1], qColor.colorValues[70*3+2]);
+		public static qColor lightSlateBlue = qColor.fromRGB(qColor.colorValues[71*3], qColor.colorValues[71*3+1], qColor.colorValues[71*3+2]);
+		public static qColor lightSlateGray = qColor.fromRGB(qColor.colorValues[72*3], qColor.colorValues[72*3+1], qColor.colorValues[72*3+2]);
+		public static qColor lightSteelBlue = qColor.fromRGB(qColor.colorValues[73*3], qColor.colorValues[73*3+1], qColor.colorValues[73*3+2]);
+		public static qColor lightYellow = qColor.fromRGB(qColor.colorValues[74*3], qColor.colorValues[74*3+1], qColor.colorValues[74*3+2]);
+		public static qColor limegReen = qColor.fromRGB(qColor.colorValues[75*3], qColor.colorValues[75*3+1], qColor.colorValues[75*3+2]);
+		public static qColor linen = qColor.fromRGB(qColor.colorValues[76*3], qColor.colorValues[76*3+1], qColor.colorValues[76*3+2]);
+		public static qColor magenta = qColor.fromRGB(qColor.colorValues[77*3], qColor.colorValues[77*3+1], qColor.colorValues[77*3+2]);
+		public static qColor maroon = qColor.fromRGB(qColor.colorValues[78*3], qColor.colorValues[78*3+1], qColor.colorValues[78*3+2]);
+		public static qColor midnightBlue = qColor.fromRGB(qColor.colorValues[79*3], qColor.colorValues[79*3+1], qColor.colorValues[79*3+2]);
+		public static qColor mintCream = qColor.fromRGB(qColor.colorValues[80*3], qColor.colorValues[80*3+1], qColor.colorValues[80*3+2]);
+		public static qColor mistyRose = qColor.fromRGB(qColor.colorValues[81*3], qColor.colorValues[81*3+1], qColor.colorValues[81*3+2]);
+		public static qColor moccasin = qColor.fromRGB(qColor.colorValues[82*3], qColor.colorValues[82*3+1], qColor.colorValues[82*3+2]);
+		public static qColor navajoWhite = qColor.fromRGB(qColor.colorValues[83*3], qColor.colorValues[83*3+1], qColor.colorValues[83*3+2]);
+		public static qColor navy = qColor.fromRGB(qColor.colorValues[84*3], qColor.colorValues[84*3+1], qColor.colorValues[84*3+2]);
+		public static qColor navyBlue = qColor.fromRGB(qColor.colorValues[85*3], qColor.colorValues[85*3+1], qColor.colorValues[85*3+2]);
+		public static qColor oldLace = qColor.fromRGB(qColor.colorValues[86*3], qColor.colorValues[86*3+1], qColor.colorValues[86*3+2]);
+		public static qColor oliveDrab = qColor.fromRGB(qColor.colorValues[87*3], qColor.colorValues[87*3+1], qColor.colorValues[87*3+2]);
+		public static qColor orange = qColor.fromRGB(qColor.colorValues[88*3], qColor.colorValues[88*3+1], qColor.colorValues[88*3+2]);
+		public static qColor orangeRed = qColor.fromRGB(qColor.colorValues[89*3], qColor.colorValues[89*3+1], qColor.colorValues[89*3+2]);
+		public static qColor orchid = qColor.fromRGB(qColor.colorValues[90*3], qColor.colorValues[90*3+1], qColor.colorValues[90*3+2]);
+		public static qColor paleGoldenRod = qColor.fromRGB(qColor.colorValues[91*3], qColor.colorValues[91*3+1], qColor.colorValues[91*3+2]);
+		public static qColor paleGreen = qColor.fromRGB(qColor.colorValues[92*3], qColor.colorValues[92*3+1], qColor.colorValues[92*3+2]);
+		public static qColor paleTurquoise = qColor.fromRGB(qColor.colorValues[93*3], qColor.colorValues[93*3+1], qColor.colorValues[93*3+2]);
+		public static qColor paleVioletRed = qColor.fromRGB(qColor.colorValues[94*3], qColor.colorValues[94*3+1], qColor.colorValues[94*3+2]);
+		public static qColor papayawhip = qColor.fromRGB(qColor.colorValues[95*3], qColor.colorValues[95*3+1], qColor.colorValues[95*3+2]);
+		public static qColor peachPuff = qColor.fromRGB(qColor.colorValues[96*3], qColor.colorValues[96*3+1], qColor.colorValues[96*3+2]);
+		public static qColor peru = qColor.fromRGB(qColor.colorValues[97*3], qColor.colorValues[97*3+1], qColor.colorValues[97*3+2]);
+		public static qColor pink = qColor.fromRGB(qColor.colorValues[98*3], qColor.colorValues[98*3+1], qColor.colorValues[98*3+2]);
+		public static qColor plum = qColor.fromRGB(qColor.colorValues[99*3], qColor.colorValues[99*3+1], qColor.colorValues[99*3+2]);
+		public static qColor powderBlue = qColor.fromRGB(qColor.colorValues[100*3], qColor.colorValues[100*3+1], qColor.colorValues[100*3+2]);
+		public static qColor purple = qColor.fromRGB(qColor.colorValues[101*3], qColor.colorValues[101*3+1], qColor.colorValues[101*3+2]);
+		public static qColor red = qColor.fromRGB(qColor.colorValues[102*3], qColor.colorValues[102*3+1], qColor.colorValues[102*3+2]);
+		public static qColor rosyBrown = qColor.fromRGB(qColor.colorValues[103*3], qColor.colorValues[103*3+1], qColor.colorValues[103*3+2]);
+		public static qColor royalBlue = qColor.fromRGB(qColor.colorValues[104*3], qColor.colorValues[104*3+1], qColor.colorValues[104*3+2]);
+		public static qColor saddleBrown = qColor.fromRGB(qColor.colorValues[105*3], qColor.colorValues[105*3+1], qColor.colorValues[105*3+2]);
+		public static qColor salmon = qColor.fromRGB(qColor.colorValues[106*3], qColor.colorValues[106*3+1], qColor.colorValues[106*3+2]);
+		public static qColor sandyBrown = qColor.fromRGB(qColor.colorValues[107*3], qColor.colorValues[107*3+1], qColor.colorValues[107*3+2]);
+		public static qColor seaGreen = qColor.fromRGB(qColor.colorValues[108*3], qColor.colorValues[108*3+1], qColor.colorValues[108*3+2]);
+		public static qColor seaShell = qColor.fromRGB(qColor.colorValues[109*3], qColor.colorValues[109*3+1], qColor.colorValues[109*3+2]);
+		public static qColor sienna = qColor.fromRGB(qColor.colorValues[110*3], qColor.colorValues[110*3+1], qColor.colorValues[110*3+2]);
+		public static qColor skyBlue = qColor.fromRGB(qColor.colorValues[111*3], qColor.colorValues[111*3+1], qColor.colorValues[111*3+2]);
+		public static qColor slateBlue = qColor.fromRGB(qColor.colorValues[112*3], qColor.colorValues[112*3+1], qColor.colorValues[112*3+2]);
+		public static qColor slateGray = qColor.fromRGB(qColor.colorValues[113*3], qColor.colorValues[113*3+1], qColor.colorValues[113*3+2]);
+		public static qColor snow = qColor.fromRGB(qColor.colorValues[114*3], qColor.colorValues[114*3+1], qColor.colorValues[114*3+2]);
+		public static qColor springGreen = qColor.fromRGB(qColor.colorValues[115*3], qColor.colorValues[115*3+1], qColor.colorValues[115*3+2]);
+		public static qColor steelBlue = qColor.fromRGB(qColor.colorValues[116*3], qColor.colorValues[116*3+1], qColor.colorValues[116*3+2]);
+		public static qColor tan = qColor.fromRGB(qColor.colorValues[117*3], qColor.colorValues[117*3+1], qColor.colorValues[117*3+2]);
+		public static qColor thistle = qColor.fromRGB(qColor.colorValues[118*3], qColor.colorValues[118*3+1], qColor.colorValues[118*3+2]);
+		public static qColor tomato = qColor.fromRGB(qColor.colorValues[119*3], qColor.colorValues[119*3+1], qColor.colorValues[119*3+2]);
+		public static qColor turquoise = qColor.fromRGB(qColor.colorValues[120*3], qColor.colorValues[120*3+1], qColor.colorValues[120*3+2]);
+		public static qColor violet = qColor.fromRGB(qColor.colorValues[121*3], qColor.colorValues[121*3+1], qColor.colorValues[121*3+2]);
+		public static qColor violetred = qColor.fromRGB(qColor.colorValues[122*3], qColor.colorValues[122*3+1], qColor.colorValues[122*3+2]);
+		public static qColor wheat = qColor.fromRGB(qColor.colorValues[123*3], qColor.colorValues[123*3+1], qColor.colorValues[123*3+2]);
+		public static qColor white = qColor.fromRGB(qColor.colorValues[124*3], qColor.colorValues[124*3+1], qColor.colorValues[124*3+2]);
+		public static qColor whiteSmoke = qColor.fromRGB(qColor.colorValues[125*3], qColor.colorValues[125*3+1], qColor.colorValues[125*3+2]);
+		public static qColor yellow = qColor.fromRGB(qColor.colorValues[126*3], qColor.colorValues[126*3+1], qColor.colorValues[126*3+2]);
+		public static qColor yellowGreen = qColor.fromRGB(qColor.colorValues[127*3], qColor.colorValues[127*3+1], qColor.colorValues[127*3+2]);
+		}
+	#endregion	
+	#endregion
+	
+	#region static from* methods
+	/// <summary>
+	/// Creates a new qColour
+	/// </summary>
+	/// <param name="red">0-255</param>
+	/// <param name="green">0-255</param>
+	/// <param name="blue">0-255</param>
+	/// <returns></returns>
+	public static qColor fromRGB(int red, int green, int blue)
+		{
+		qColor c;
+		c.b = (byte)blue;
+		c.g = (byte)green;
+		c.r = (byte)red;
+		c.a = 255;
+		return c;
+		}
+	
+	/// <summary>
+	/// Creates a new qColour
+	/// </summary>
+	/// <param name="red">0-255</param>
+	/// <param name="green">0-255</param>
+	/// <param name="blue">0-255</param>
+	/// <param name="alpha">0-255 (0=transparent, 255=solid)</param>
+	/// <returns></returns>
+	public static qColor fromRGBA(int red, int green, int blue, int alpha)
+		{
+		qColor c;
+		c.b = (byte)blue;
+		c.g = (byte)green;
+		c.r = (byte)red;
+		c.a = (byte)alpha;
+		return c;
+		}	
+	
+	/// <summary>
+	/// Creates a new qColour
+	/// </summary>
+	/// <param name="H">Hue</param>
+	/// <param name="S">Saturation</param>
+	/// <param name="V">Value</param>
+	/// <returns></returns>
+	public static qColor fromHSV(float H, float S, float V)
+		{
+		return fromHSVA(H, S, V, 255);
+		}
+	/// <summary>
+	/// Creates a new qColour
+	/// </summary>
+	/// <param name="H">Hue</param>
+	/// <param name="S">Saturation</param>
+	/// <param name="V">Value</param>
+	/// <param name="alpha">0-255 (0=transparent, 255=solid)</param>
+	/// <returns></returns>
+	public static qColor fromHSVA(float H, float S, float V, byte alpha)
+		{
+		qColor c;
+		c.a = alpha;
+		if ( S == 0 )                       //HSV values = From 0 to 1
+			{
+			c.r = (byte)(V * 255.0f);                      //RGB results = From 0 to 255
+			c.g = (byte)(V * 255.0f);
+			c.b = (byte)(V * 255.0f);
+			}
+		else
+			{
+			float var_h = H * 6;
+			float var_i = (int)var_h;             //Or ... var_i = floor( var_h )
+			float var_1 = V * ( 1 - S );
+			float var_2 = V * ( 1 - S * ( var_h - var_i ) );
+			float var_3 = V * ( 1 - S * ( 1 - ( var_h - var_i ) ) );
+			
+			float var_r = V, var_g = var_1, var_b = var_2;
+			if      ( var_i == 0 ) { var_r = V     ; var_g = var_3 ; var_b = var_1; }
+			else if ( var_i == 1 ) { var_r = var_2 ; var_g = V     ; var_b = var_1; }
+			else if ( var_i == 2 ) { var_r = var_1 ; var_g = V     ; var_b = var_3; }
+			else if ( var_i == 3 ) { var_r = var_1 ; var_g = var_2 ; var_b = V;     }
+			else if ( var_i == 4 ) { var_r = var_3 ; var_g = var_1 ; var_b = V;     }
+			//else                   { var_r = V     ; var_g = var_1 ; var_b = var_2; }
+
+			c.r = (byte)(var_r * 255.0f);                  //RGB results = From 0 to 255
+			c.g = (byte)(var_g * 255.0f);
+			c.b = (byte)(var_b * 255.0f);
+			}
+		return c;
+		}
+	
+	/// <summary>
+	/// Creates a colour from a string, Returns black when an error occurs
+	/// String can be int the form (i)(i a)(r g b)(r g b a) OR a prenamed color string 
+	/// </summary>
+	/// <param name="s">String to parse</param>
+	/// <returns></returns>
+	public static qColor fromString(string s)
+		{
+		try
+			{
+			string[] elements = s.Trim().Replace("  ", " ").Split(" ".ToCharArray());
+			
+			if(s.IndexOfAny("0123456789".ToCharArray()) != -1)
+				{
+				//numerical information string
+				switch(elements.Length)
+					{
+					case 0:
+						return qColor.fromRGB(0,0,0);
+					case 1:
+                        return qColor.fromRGB(byte.Parse(elements[0]), byte.Parse(elements[0]), byte.Parse(elements[0]));
+					case 2:
+						//assume c c c a (intensity + opacity)
+						return qColor.fromRGBA(byte.Parse(elements[0]), byte.Parse(elements[0]), byte.Parse(elements[0]), byte.Parse(elements[1]));
+					case 3:
+						return qColor.fromRGB(byte.Parse(elements[0]), byte.Parse(elements[1]), byte.Parse(elements[2]));
+					default:
+						//four or more
+						return qColor.fromRGBA(byte.Parse(elements[0]), byte.Parse(elements[1]), byte.Parse(elements[2]), byte.Parse(elements[2]));
+					}
+				}
+			else
+				{
+				//non numerical string
+				qColor c = qColor.fromRGB(0,0,0);
+				string lowerCase = s.ToLower();
+				int i;
+				for(i=0;i<colorNames.Length;i++)
+					{
+					if(lowerCase.CompareTo(colorNames[i]) == 0)
+						{
+						unsafe
+							{
+							c.r= colorValues[i*3];
+							c.g= colorValues[i*3+1];
+							c.b= colorValues[i*3+2];
+							c.a = 255;
+							}
+						}
+					}
+				return c;
+				}
+			}
+		catch
+			{
+			return qColor.fromRGB(0,0,0);
+			}
+		}
+	
+	#endregion
+	
+	#region operators
+	/// <summary>
+	/// Cast to a windows colour
+	/// </summary>
+	/// <param name="c">a qColor</param>
+	/// <returns>a windows colour</returns>
+	public static unsafe explicit operator System.Drawing.Color(qColor c)
+		{
+		//FIX:
+		return System.Drawing.Color.FromArgb(*((int*)&c.b));
+		//return Color.FromArgb(c.a, c.r, c.g, c.b);
+		}
+	
+	/// <summary>
+	/// Cast from a windows colour
+	/// </summary>
+	/// <param name="c">a windows colour</param>
+	/// <returns>a qColor</returns>
+	public static implicit operator qColor(System.Drawing.Color c)
+		{
+		qColor r;
+		r.a = c.A;
+		r.r = c.R;
+		r.g = c.G;
+		r.b = c.B;
+		return r;
+		}
+
+	#endregion
+
+	#region internal functions
+	private float min(float a, float b, float c)
+		{
+		return min(min(a,b),c);
+		}
+	private float min(float a, float b)
+		{
+		return (a < b) ? a : b;
+		}
+	
+	private float max(float a, float b, float c)
+		{
+		return max(max(a,b),c);
+		}
+	private float max(float a, float b)
+		{
+		return (a > b) ? a : b;
+		}
+	
+	#endregion
+	
+	#region to* converters
+	/// <summary>
+	/// Returns Hue saturation and value information
+	/// </summary>
+	/// <param name="H">Hue</param>
+	/// <param name="S">Saturation</param>
+	/// <param name="V">Value</param>
+	public void toHSV(out float H, out float S, out float V)
+		{
+		float var_R = ( (float)r / 255.0f );                     //RGB values = From 0 to 255
+		float var_G = ( (float)g / 255.0f );
+		float var_B = ( (float)b / 255.0f );
+
+		float var_Min = min( var_R, var_G, var_B );    //Min. value of RGB
+		float var_Max = max( var_R, var_G, var_B );    //Max. value of RGB
+		float del_Max = var_Max - var_Min;             //Delta RGB value
+
+		V = var_Max;
+
+		if ( del_Max == 0 )                     //This is a gray, no chroma...
+			{
+			H = 0;                                //HSV results = From 0 to 1
+			S = 0;
+			}
+		else                                    //Chromatic data...
+			{
+			S = del_Max / var_Max;
+
+			float del_R = ( ( ( var_Max - var_R ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+			float del_G = ( ( ( var_Max - var_G ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+			float del_B = ( ( ( var_Max - var_B ) / 6 ) + ( del_Max / 2 ) ) / del_Max;
+
+			if      ( var_R == var_Max ) H = del_B - del_G;
+			else if ( var_G == var_Max ) H = ( 1 / 3 ) + del_R - del_B;
+			else //if ( var_B == var_Max ) 
+				H = ( 2 / 3 ) + del_G - del_R;
+
+			if ( H < 0 )  H += 1;
+			if ( H > 1 )  H -= 1;
+			}
+		}
+	
+	/// <summary>
+	/// Returns a string representing the colour.
+	/// </summary>
+	/// <returns>A sring in the format "r g b a"</returns>
+	public override string ToString()
+		{
+		return String.Format("{0} {1} {2} {3}", r, g, b, a);
+		}
+	
+	/// <summary>
+	/// Returns the english name of the colour.
+	/// </summary>
+	/// <returns>An named version of the colour or custom if no name exists.</returns>
+	public string toName()
+		{
+		int i;
+		for(i=0;i<colorValues.Length;i+=3)
+			{
+			if(colorValues[i] == r)
+				if(colorValues[i+1] == g)
+					if(colorValues[i+2] == b)
+						{
+						return colorNames[i/3];
+						}
+			}
+		return "custom";
+		}
+	#endregion
+	
+	#region random generation
+	/// <summary>
+	/// Generates an array of random colours (with random opacity).
+	/// </summary>
+	/// <param name="amount">Number of colours to generate.</param>
+	/// <returns>An array of random colours.</returns>
+	public static qColor[] generateRandomColors(int amount)
+		{
+		Random r = new Random();
+		return generateRandomColors(ref r, amount);
+		}
+	
+	/// <summary>
+	/// Generates an array of random colours (with random opacity).
+	/// </summary>
+	/// <param name="seed">seed value for random colour generation.</param>
+	/// <param name="amount">Number of colours to generate.</param>
+	/// <returns>An array of random colours.</returns>
+	public static qColor[] generateRandomColors(int seed, int amount)
+		{
+		Random r = new Random(seed);
+		return generateRandomColors(ref r, amount);
+		}
+	
+	/// <summary>
+	/// Generates an array of random colours (with random opacity).
+	/// </summary>
+	/// <param name="rGenerator">A random number generator to use.</param>
+	/// <param name="amount">Number of colours to generate.</param>
+	/// <returns>An array of random colours.</returns>
+	public static qColor[] generateRandomColors(ref System.Random rGenerator, int amount)
+		{
+		qColor[] colors = new qColor[amount];
+		int i;
+		for(i=0;i<amount;i++)
+			colors[i] = generateRandom(ref rGenerator);
+		return colors;
+		}
+	
+	/// <summary>
+	/// Generates an array of random colours (with full opacity).
+	/// </summary>
+	/// <param name="amount"></param>
+	/// <returns></returns>
+	public static qColor[] generateRandomColorsOpaque(int amount)
+		{
+		Random r = new Random();
+		return generateRandomColorsOpaque(ref r, amount);
+		}
+	
+	/// <summary>
+	/// Generates an array of random colours (with full opacity).
+	/// </summary>
+	/// <param name="seed"></param>
+	/// <param name="amount"></param>
+	/// <returns></returns>
+	public static qColor[] generateRandomColorsOpaque(int seed, int amount)
+		{
+		Random r = new Random(seed);
+		return generateRandomColorsOpaque(ref r, amount);
+		}
+	
+	/// <summary>
+	/// Generates an array of random colours (with full opacity).
+	/// </summary>
+	/// <param name="rGenerator"></param>
+	/// <param name="amount"></param>
+	/// <returns></returns>
+	public static qColor[] generateRandomColorsOpaque(ref System.Random rGenerator, int amount)
+		{
+		qColor[] colors = new qColor[amount];
+		int i;
+		for(i=0;i<amount;i++)
+			colors[i] = generateRandomOpaque(ref rGenerator);
+		return colors;
+		}
+	
+	/// <summary>
+	/// Generates an array of random colours (with random opacity).
+	/// </summary>
+	/// <param name="rGenerator"></param>
+	/// <returns></returns>
+	public static qColor generateRandom(ref System.Random rGenerator)
+		{
+		return qColor.fromRGBA(rGenerator.Next(0,255), rGenerator.Next(0,255), rGenerator.Next(0,255), rGenerator.Next(0,255));
+		}
+	
+	
+	/// <summary>
+	/// Generates an array of random colours (with full opacity).
+	/// </summary>
+	/// <param name="rGenerator"></param>
+	/// <returns></returns>
+	public static qColor generateRandomOpaque(ref System.Random rGenerator)
+		{
+		return qColor.fromRGB(rGenerator.Next(0,255), rGenerator.Next(0,255), rGenerator.Next(0,255));
+		}
+	
+	#endregion
+	
+	#region IFormattable Members
+	/// <summary>
+	/// Returns a string representing the colour.
+	/// </summary>
+	/// <param name="format">unused</param>
+	/// <param name="formatProvider">an IFormatProvider, used when turning byte values into strings.</param>
+	/// <returns>A sring in the format "r g b a"</returns>
+	string System.IFormattable.ToString(string format, IFormatProvider formatProvider)
+		{
+		return String.Format(formatProvider, "{0} {1} {2} {3}", r, g, b, a);
+		}
+
+	#endregion
+	
+	#region mixing
+	public static qColor mix(qColor a, qColor b, float per)
+		{
+		qColor c = new qColor();
+		c.a = (byte)(a.a + (byte)((b.a - a.a)* per));
+		c.r = (byte)(a.r + (byte)((b.r - a.r)* per));
+		c.g = (byte)(a.g + (byte)((b.g - a.g)* per));
+		c.b = (byte)(a.b + (byte)((b.b - a.b)* per));
+		return c;
+		}
+	
+	public qColor mix(qColor a, float per)
+		{
+		return qColor.mix(this, a, per);
+		}
+	
+	
+	public static qColor rgbMix(qColor a, qColor b, float per)
+		{
+		qColor c = new qColor();
+		c.a = a.a;
+		c.r = (byte)(a.r + (byte)((b.r - a.r)* per));
+		c.g = (byte)(a.g + (byte)((b.g - a.g)* per));
+		c.b = (byte)(a.b + (byte)((b.b - a.b)* per));
+		return c;
+		}
+	
+	public qColor rgbMix(qColor a, float per)
+		{
+		return qColor.rgbMix(this, a, per);
+		}
+	
+	#endregion
+	
+	#region helpers
+	private static int abs(int a, int b)
+		{
+		if(a>b)
+			return a-b;
+		else
+			return b-a;
+		}
+	#endregion
+	
+	#region stats
+	/// <summary>
+	/// Calculates the colorant contrast of a colour. This is a metric used in many colour calculations.
+	/// </summary>
+	/// <param name="b">A colour to be mesured.</param>
+	/// <returns>The Colorant Contrast of a colour.</returns>
+	public float mesureColorantContrast(qColor b)
+		{
+		return (qColor.abs(r, b.r)+qColor.abs(g, b.g)+qColor.abs(this.b, b.b))*(1.0f/(3.0f*255.0f));
+		}
+	#endregion
+	}
+}
